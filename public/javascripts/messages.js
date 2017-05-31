@@ -2,47 +2,31 @@
  * Created by rishi on 5/30/17.
  */
 
-var app = angular.module('messages', []);
-
-// app.config(function ($routeProvider) {
-//     $routeProvider
-//         .when('/', {
-//                 templateUrl: '/partials/home.html',
-//                 controller: 'Home'
-//             })
-//         .when('/show', {
-//                 templateUrl: '/partials/show_message.html',
-//                 controller: 'ShowMessage'
-//             })
-//         .otherwise({
-//             redirectTo: '/'
-//         });
-// });
-
+var app = angular.module('messages', ['ngRoute']);
+/* Regex to check for valid Email and Mobile number */
 var EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 var MOBILE_REGEX = /^\+?\d{1}\d{3}\d{3}\d{4}$/;
-app.directive('contact', function() {
-    return {
-        require: 'ngModel',
-        link: function(scope, elm, attrs, ctrl) {
-            ctrl.$validators.contact = function(modelValue, viewValue) {
-                if (ctrl.$isEmpty(modelValue)) {
-                    console.log('First true');
-                    return true;
-                }
 
-                if(EMAIL_REGEX.test(viewValue) || MOBILE_REGEX.test(viewValue)) {
-                    console.log('Valid data');
-                    return true;
-                }
-                console.log('Second false');
-                return false;
-            };
-        }
-    };
+app.config(function ($routeProvider) {
+    $routeProvider
+        .when('/', {
+                templateUrl: '/partials/home.html',
+                controller: 'Home'
+            })
+        .when('/show/:id', {
+                templateUrl: '/partials/show_message.html',
+                controller: 'ShowMessage'
+            })
+        .otherwise({
+            redirectTo: '/'
+        });
 });
 
+
+
 app.controller('Home', function ($scope, $http) {
+    $scope.success = false;
+    $scope.success_msg = "";
     $scope.error_msg = "";
     $scope.error = false;
     $scope.details = {};
@@ -69,15 +53,20 @@ app.controller('Home', function ($scope, $http) {
             url : '/sendsms',
             data : $scope.details,
             headers : {'Content-Type': 'application/json'}
-        }).then(function successCallback(data) {
+        }).then(function successCallback(success) {
             //checking the response data for statusCode
-            console.log("Status code " + data.status_code);
-            console.log("Status code " + data.status_code == 200);
-
+            console.log("Status code " + success.data.status_code);
+            if(success.data.status_code == 200){
+                $scope.success = true;
+                $scope.success_msg = success.data.response;
+            }else {
+                $scope.error_msg = success.data.response;
+                $scope.error = true;
+            }
         }, function errorCallback(error) {
-            console.log("Error "+ error);
-            // $scope.error_msg = error;
-            // $scope.error = true;
+            console.log("Error "+ JSON.stringify(error));
+            $scope.error_msg = error.data.response;
+            $scope.error = true;
         });
     };
 
@@ -87,16 +76,51 @@ app.controller('Home', function ($scope, $http) {
             url : '/sendemail',
             data : $scope.details,
             headers : {'Content-Type': 'application/json'}
-        }).then(function successCallback(data) {
+        }).then(function successCallback(success) {
             //checking the response data for statusCode
-            console.log("Status code " + data.status_code);
-            console.log("Status code " + data.status_code == 200);
-
+            console.log("Status code " + success.data.status_code);
+            if(success.data.status_code == 200){
+                $scope.success = true;
+                $scope.success_msg = success.data.response;
+            }else {
+                $scope.error_msg = success.data.response;
+                $scope.error = true;
+            }
         }, function errorCallback(error) {
-            console.log("Error "+ error);
-            // $scope.error_msg = error;
-            // $scope.error = true;
+            console.log("Error "+ JSON.stringify(error));
+            $scope.error_msg = error.data.response;
+            $scope.error = true;
         });
     };
+
+});
+
+app.controller('ShowMessage', function ($scope, $http, $routeParams) {
+    console.log('Controller started');
+    $scope.error = false;
+    $scope.message = '';
+    console.log("Value "+ $routeParams.id);
+
+    $http({
+        method : "GET",
+        url : '/getmsg',
+        params: {
+            "id": $routeParams.id
+        },
+        headers : {'Content-Type': 'application/json'}
+    }).then(function successCallback(success) {
+        //checking the response data for statusCode
+        console.log("Status code " + success.data.status_code);
+        if(success.data.status_code == 200){
+            $scope.message = success.data.response;
+        }else {
+            $scope.error_msg = success.data.response;
+            $scope.error = true;
+        }
+    }, function errorCallback(error) {
+        console.log("Error "+ JSON.stringify(error));
+        $scope.error_msg = error.data.response;
+        $scope.error = true;
+    });
 
 });

@@ -1,48 +1,5 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
-
-a {
-  color: #00B7FF;
-}
-
-.tab-pane {
-  padding : 30px;
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  border-radius: 0px 0px 5px 5px;
-  background: #ffffff;
-}
-
-.tab-one{
-  width: 49%;
-  float: left;
-}
-.tab-two{
-  width: 49%;
-  float: right;
-}
-
-.login-register{
-  margin-top: 60px;
-}
-
-.nav-tabs {
-  border-style: none none solid solid;
-  border-radius: 0 3px 3px 0;
-  background: #eee;
-  border: 1px solid;
-  border-color: #d6d6d6;
-}
-
-.nav > li > a {
-  color: #555!important;
-  font-size: 18px;
-  vertical-align: middle;
-}
-
-.nav > li.active > a {
-  color: #0654ba!important;
+.req-input:after {
+    content: "*";
+    font-weight: bold;
+    color: red;
 }

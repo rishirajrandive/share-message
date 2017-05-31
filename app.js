@@ -11,7 +11,6 @@ var dotenv = require('dotenv').config();
 console.log('Sender '+ process.env.TWILIO_SENDER);
 
 var index = require('./routes/index');
-var show = require('./routes/show');
 
 var app = express();
 
@@ -28,7 +27,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/show', show);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
