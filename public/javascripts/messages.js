@@ -33,21 +33,18 @@ app.controller('Home', function ($scope, $http) {
 
     $scope.validateAndSend = function (details) {
         $scope.details = angular.copy(details);
-        console.log("Input data " + JSON.stringify($scope.details));
         var contact = $scope.details.contact;
-        console.log('Email regex '+ EMAIL_REGEX.test(contact));
-        console.log('Mobile regex '+ MOBILE_REGEX.test(contact));
         if(EMAIL_REGEX.test(contact)) {
             $scope.sendEmail();
         }else if(MOBILE_REGEX.test(contact)){
             $scope.sendSMS();
         }else {
-            console.log('Invalid details')
+            $scope.error_msg = 'Entered details are not correct';
+            $scope.error = true;
         }
     };
 
     $scope.sendSMS = function(){
-        console.log(JSON.stringify($scope.details));
         $http({
             method : "POST",
             url : '/sendsms',
@@ -55,7 +52,6 @@ app.controller('Home', function ($scope, $http) {
             headers : {'Content-Type': 'application/json'}
         }).then(function successCallback(success) {
             //checking the response data for statusCode
-            console.log("Status code " + success.data.status_code);
             if(success.data.status_code == 200){
                 $scope.success = true;
                 $scope.success_msg = success.data.response;
@@ -64,7 +60,6 @@ app.controller('Home', function ($scope, $http) {
                 $scope.error = true;
             }
         }, function errorCallback(error) {
-            console.log("Error "+ JSON.stringify(error));
             $scope.error_msg = error.data.response;
             $scope.error = true;
         });
@@ -78,7 +73,6 @@ app.controller('Home', function ($scope, $http) {
             headers : {'Content-Type': 'application/json'}
         }).then(function successCallback(success) {
             //checking the response data for statusCode
-            console.log("Status code " + success.data.status_code);
             if(success.data.status_code == 200){
                 $scope.success = true;
                 $scope.success_msg = success.data.response;
@@ -87,7 +81,6 @@ app.controller('Home', function ($scope, $http) {
                 $scope.error = true;
             }
         }, function errorCallback(error) {
-            console.log("Error "+ JSON.stringify(error));
             $scope.error_msg = error.data.response;
             $scope.error = true;
         });
@@ -96,10 +89,8 @@ app.controller('Home', function ($scope, $http) {
 });
 
 app.controller('ShowMessage', function ($scope, $http, $routeParams) {
-    console.log('Controller started');
     $scope.error = false;
     $scope.message = '';
-    console.log("Value "+ $routeParams.id);
 
     $http({
         method : "GET",
@@ -110,7 +101,6 @@ app.controller('ShowMessage', function ($scope, $http, $routeParams) {
         headers : {'Content-Type': 'application/json'}
     }).then(function successCallback(success) {
         //checking the response data for statusCode
-        console.log("Status code " + success.data.status_code);
         if(success.data.status_code == 200){
             $scope.message = success.data.response;
         }else {
@@ -118,7 +108,6 @@ app.controller('ShowMessage', function ($scope, $http, $routeParams) {
             $scope.error = true;
         }
     }, function errorCallback(error) {
-        console.log("Error "+ JSON.stringify(error));
         $scope.error_msg = error.data.response;
         $scope.error = true;
     });

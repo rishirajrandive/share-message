@@ -18,7 +18,6 @@ router.get('/', function(req, res, next) {
 
 /* Sends SMS to the entered mobile */
 router.post('/sendsms', function (req, res) {
-  console.log('Sending SMS '+ JSON.stringify(req.body));
   var mobileNumber = req.body.contact;
   var message = req.body.message;
 
@@ -26,7 +25,6 @@ router.post('/sendsms', function (req, res) {
 
   msgStoreManager.saveMessage(message, id, function (err) {
     if(err){
-      console.log('Saving to file failed');
       res.status(500);
       res.send({response: 'Saving message to file failed '+ err});
     }
@@ -35,10 +33,8 @@ router.post('/sendsms', function (req, res) {
 
     twilioService.sendSMS(mobileNumber, sms, function (err) {
       if(err){
-        console.log('Sending sms failed');
         res.send({status_code: err.status, response: 'Sorry! Sending SMS to '+ mobileNumber + ' failed. Please try again.'+ err});
       }
-      console.log('Show success message');
       res.send({status_code: 200, response: 'Great! SMS is sent to ' +  mobileNumber + ' with link to your message'});
     });
   });
@@ -46,7 +42,7 @@ router.post('/sendsms', function (req, res) {
 
 /* Sends Email to the entered email Id */
 router.post('/sendemail', function(req, res) {
-  console.log('Sending email');
+
   var emailId = req.body.contact;
   var message = req.body.message;
 
@@ -70,17 +66,15 @@ router.post('/sendemail', function(req, res) {
 
   msgStoreManager.saveMessage(message, id, function (err) {
     if (err) {
-      console.log('Saving to file failed');
+
       res.status(500);
       res.send({response: 'Saving message to file failed ' + err});
     }
     transporter.sendMail(mailOptions, function(err, info){
       if (err) {
-        console.log(err);
         res.status(500);
         res.send({response: 'Sorry! Sending email to ' + emailId + ' failed. Please try again.'+ err})
       } else {
-        console.log('Email sent: ' + info.response);
         res.send({status_code: 200, response: 'Great! email is sent to ' +  emailId + ' with link to your message'})
       }
     });
@@ -90,22 +84,17 @@ router.post('/sendemail', function(req, res) {
 
 /* Returns message for the Id given */
 router.get('/getmsg', function(req, res, next) {
-  console.log('URL param '+ req);
   var id = parseInt(req.query.id);
 
   if(isNaN(id)){
-    console.log('Id entered is not valid');
     res.send({status_code: 500, response: 'Sorry! Given message ID is not valid'});
   }else {
     msgStoreManager.getMessage(id, function (err, msg) {
       if(err){
-        console.log('Failed fetching msg');
         res.send({status_code: 500, response: 'Sorry! failed to find message'});
       }else if(msg){
-        console.log('Message is '+ msg);
         res.send({status_code: 200, response: msg});
       }else {
-        console.log('Message not found');
         res.send({status_code: 404, response: 'Sorry! message not found'});
       }
     });
