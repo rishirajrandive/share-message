@@ -5,13 +5,16 @@ This is a simple web app to send a message to either a mobile or an email id.
 **Developed using**
 
 Node v6.10.3
+
 npm 3.10.10
+
 AngularJS 1.6.4
+
 Boostrap 3.3.7
 
 **How to use**
 
-1. App is deployed on Heroku, [click here]() to access it.
+1. App is deployed on Heroku, [click here](http://share-message.herokuapp.com/#!/) to access it.
 2. Enter either mobile number (+15558675309) or an email id (abc@xyz.com)
 3. Enter your message
 4. Click send
