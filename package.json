@@ -14,7 +14,6 @@
     "express": "~4.14.1",
     "file-system": "^2.2.2",
     "morgan": "~1.7.0",
-    "node-mandrill": "^1.0.1",
     "nodemailer": "^4.0.1",
     "serve-favicon": "~2.3.2",
     "twilio": "^3.3.0"
