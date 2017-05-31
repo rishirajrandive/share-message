@@ -33,9 +33,13 @@ Currently the app only works for US numbers.
 4. Create a .env file in your root directory as shown
 
 TRIAL_ACCOUNT_SID=<your_twilio_account_sid>
+
 TRIAL_AUTH_TOKEN=<your_twilio_auth_token>
+
 TWILIO_SENDER=<your_twilio_phone_number>
+
 EMAIL_USERNAME=<your_email_id>
+
 EMAIL_PASSWORD=<your_email_password>
 
 3. Once complete, run 'npm start' command and you should be able to run the app on http://localhost:3000/
