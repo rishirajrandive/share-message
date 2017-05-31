@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-var mandrill = require('node-mandrill')('6gzbwndAhPHpAbMab6aKrg');
 var nodeMailer = require('nodemailer');
 var fs = require('fs');
 var url = require('url');
