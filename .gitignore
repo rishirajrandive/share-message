@@ -57,3 +57,6 @@ typings/
 # dotenv environment variables file
 .env
 
+# ideal workspace.xml
+.idea/workspace.xml
+.idea/runConfigurations/bin_www.xml
